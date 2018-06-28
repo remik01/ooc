@@ -1,16 +1,16 @@
-
+#include <stdlib.h>
 #include "ClassRectangle.h"
 
-unsigned int set_width( Rectangle *self, int width)
+Rectangle *set_width( Rectangle *self, int width)
 {
     self->width = width;
-    return self->width;
+    return self;
 }
 
-unsigned int set_height( Rectangle *self, int height)
+Rectangle *set_height( Rectangle *self, int height)
 {
     self->height = height;
-    return self->height;
+    return self;
 }
 
 unsigned int get_area( Rectangle *self)
@@ -18,10 +18,13 @@ unsigned int get_area( Rectangle *self)
     return self->width * self->height;
 }
 
-
-const struct rectangle_library Library =
+// a kind of design pattern "factory"
+Rectangle *get_rectangle()
 {
-    .set_width = set_width,
-    .set_height = set_height,
-    .get_area = get_area
-};
+    Rectangle *myrec = malloc(sizeof(Rectangle));
+    myrec->set_width = set_width;
+    myrec->set_height = set_height;
+    myrec->get_area = get_area;
+
+    return myrec;
+}

@@ -7,12 +7,11 @@
 
 int main(int argc, char const *argv[])
 {
-    Rectangle *myrec = malloc(sizeof(Rectangle));
+    Rectangle *myrec = get_rectangle();
 
-    Library.set_width(myrec, 5);
-    Library.set_height(myrec, 21);
+    myrec->set_width(myrec, 17)->set_height(myrec, 21);
 
-    printf("area: %d\n", Library.get_area(myrec));
+    printf("area: %d\n", myrec->get_area(myrec));
 
     free(myrec);
 
