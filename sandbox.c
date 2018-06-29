@@ -14,6 +14,7 @@ int main(int argc, char const *argv[])
     printf("area: %d\n", myrec->get_area(myrec));
 
     free(myrec);
+    myrec = NULL;
 
     return 0;
 }
