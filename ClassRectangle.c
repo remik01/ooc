@@ -32,7 +32,7 @@ struct node
 
 node *head = NULL;
 
-void cleanup_rectangles(void)
+void cleanup(void)
 {
     node *cursor = head;
     while(cursor != NULL)
@@ -45,6 +45,7 @@ void cleanup_rectangles(void)
     }
     head = NULL;
 }
+
 
 
 // a kind of design pattern "factory"
@@ -72,3 +73,8 @@ Rectangle *get_rectangle()
 
     return myrec;
 }
+
+// this simulates static issues of a class
+struct Rectangles Rectangles = {0, 0, set_width, set_height, get_area,
+           get_rectangle, cleanup
+};
