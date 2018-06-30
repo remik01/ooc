@@ -7,14 +7,23 @@
 
 int main(int argc, char const *argv[])
 {
-    Rectangle *myrec = get_rectangle();
+    Rectangle *myrec[10];
 
-    myrec->set_width(myrec, 17)->set_height(myrec, 21);
+    for(int i = 0; i < 10; i++)
+    {
+        myrec[i] = get_rectangle();
+        myrec[i]->set_width(myrec[i], (31 * i) % 69)->set_height(myrec[i],
+                (51 * i) % 155 );
+    }
 
-    printf("area: %d\n", myrec->get_area(myrec));
+    for(int i = 0; i < 10; i++)
+    {
+        printf("%d x %d = %d\n", myrec[i]->width, myrec[i]->height,
+               myrec[i]->get_area(myrec[i]));
+    }
 
-    free(myrec);
-    myrec = NULL;
+
+    cleanup_rectangles();
 
     return 0;
 }
