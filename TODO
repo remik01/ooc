@@ -1,0 +1,11 @@
+TODO
+
+- sort with threads
+
+- a "general" (common/shared) instance to simulate the static data, to be different from other objects
+-- it shoud be used as a pointer
+-- it can be convieniently used in loops etc.
+
+
+
+
