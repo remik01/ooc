@@ -14,6 +14,16 @@ Rectangle *set_height( Rectangle *self, int height)
     return self;
 }
 
+unsigned int get_width( Rectangle *self)
+{
+    return self->width;
+}
+
+unsigned int get_height( Rectangle *self)
+{
+    return self->height;
+}
+
 unsigned int get_area( Rectangle *self)
 {
     return self->width * self->height;
@@ -59,6 +69,8 @@ Rectangle *get_rectangle()
     }
     myrec->set_width = set_width;
     myrec->set_height = set_height;
+    myrec->get_width = get_width;
+    myrec->get_height = get_height;
     myrec->get_area = get_area;
 
     node *new_node = (node *)malloc(sizeof(node));
@@ -74,7 +86,18 @@ Rectangle *get_rectangle()
     return myrec;
 }
 
+// for sorting purposes
+int compare_area( const void *a, const void *b)
+{
+    Rectangle *rec_a =  *((Rectangle **) a);
+    Rectangle *rec_b =  *((Rectangle **) b);
+
+    if ( rec_a->get_area(rec_a) == rec_b->get_area(rec_b) ) return 0;
+    else if ( rec_a->get_area(rec_a) < rec_b->get_area(rec_b) ) return -1;
+    else return 1;
+}
+
 // this simulates static issues of a class
-struct Rectangles Rectangles = {0, 0, set_width, set_height, get_area,
-           get_rectangle, cleanup
+struct Rectangles Rectangles = {0, 0, set_width, set_height, get_width,
+           get_height, get_area, get_rectangle, cleanup, compare_area
 };
