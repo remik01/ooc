@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "ClassRectangle.h"
 
 // flags for get_rectangle
@@ -8,15 +9,28 @@
 
 Rectangle *set_width( Rectangle *self, int width)
 {
-    self->width = width;
+    if(!self->is_immutable)
+    {
+        self->width = width;
+    }
     return self;
 }
 
 Rectangle *set_height( Rectangle *self, int height)
 {
-    self->height = height;
+    if(!self->is_immutable)
+    {
+        self->height = height;
+    }
     return self;
 }
+
+Rectangle *immute( Rectangle *self)
+{
+    self->is_immutable = true;
+    return self;
+}
+
 
 unsigned int get_width( Rectangle *self)
 {
@@ -76,6 +90,7 @@ Rectangle *get_rectangle(int flag)
         }
         myrec->set_width = set_width;
         myrec->set_height = set_height;
+        myrec->immute = immute;
         myrec->get_width = get_width;
         myrec->get_height = get_height;
         myrec->get_area = get_area;
@@ -111,7 +126,7 @@ int compare_area( const void *a, const void *b)
 }
 
 // this simulates static issues of a class
-struct s_rectangles Rectangles = {0, 0, set_width, set_height, get_width,
-           get_height, get_area, get_rectangle, cleanup, compare_area,
-           _STANDARD, _SINGLETON
+struct s_rectangles Rectangles = {0, 0, set_width, set_height,
+           immute, get_width, get_height, get_area, get_rectangle,
+           cleanup, compare_area, _STANDARD, _SINGLETON
 };

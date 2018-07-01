@@ -16,14 +16,19 @@ int main(int argc, char const *argv[])
     {
         //the last 25 elements are the same,
         // due to an optional singleton featureof the factory
-        myrec[i] = Rectangles.get_rectangle(i < 75 ?
-                                            Rectangles.STANDARD :
-                                            Rectangles.SINGLETON);
+        myrec[i] = Rectangles.get_rectangle(
+                       (i < 75 ? Rectangles.STANDARD : Rectangles.SINGLETON)
+                   );
         // as the objects are pointers,
         // when a singleton will be changed,
-        //then all other will also be changed
+        // then all other will also be changed
+        // except we make them immutable
         Rectangles.set_width(myrec[i], (31 * i) % 69)
         ->set_height(myrec[i], (51 * i) % 155 );
+        if(i == 75)
+        {
+            myrec[i]->immute(myrec[i]);
+        }
     }
 
     qsort( myrec, 50, sizeof(Rectangle *), Rectangles.compare_area );
@@ -58,9 +63,9 @@ int main(int argc, char const *argv[])
 
     for(int i = 0; i < 100; i++)
     {
-        printf("%d x %d = %d\n", Rectangles.get_width(sorted_rec[i]),
+        printf("%d x %d = %d (%d)\n", Rectangles.get_width(sorted_rec[i]),
                Rectangles.get_height(sorted_rec[i]),
-               Rectangles.get_area(sorted_rec[i]));
+               Rectangles.get_area(sorted_rec[i]), sorted_rec[i]->is_immutable);
     }
 
     Rectangles.cleanup();

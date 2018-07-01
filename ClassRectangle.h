@@ -1,3 +1,4 @@
+#include <stdbool.h>
 
 typedef struct s_rectangle Rectangle;
 
@@ -5,8 +6,10 @@ struct s_rectangle
 {
     int width;
     int height;
+    bool is_immutable;
     Rectangle *(*set_width)(Rectangle *self, int width);
     Rectangle *(*set_height)(Rectangle *self, int height);
+    Rectangle *(*immute)(Rectangle *self);
     unsigned int (*get_width)(Rectangle *self);
     unsigned int (*get_height)(Rectangle *self);
     unsigned int (*get_area)(Rectangle *self);
@@ -19,6 +22,7 @@ struct s_rectangles
     int height;
     Rectangle *(*set_width)(Rectangle *self, int width);
     Rectangle *(*set_height)(Rectangle *self, int height);
+    Rectangle *(*immute)(Rectangle *self);
     unsigned int (*get_width)(Rectangle *self);
     unsigned int (*get_height)(Rectangle *self);
     unsigned int (*get_area)(Rectangle *self);
