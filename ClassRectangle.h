@@ -1,7 +1,7 @@
 
-typedef struct Rectangle Rectangle;
+typedef struct s_rectangle Rectangle;
 
-struct Rectangle
+struct s_rectangle
 {
     int width;
     int height;
@@ -12,7 +12,8 @@ struct Rectangle
     unsigned int (*get_area)(Rectangle *self);
 };
 
-struct Rectangles
+// this simulates static issues of a class
+struct s_rectangles
 {
     int width;
     int height;
@@ -21,9 +22,12 @@ struct Rectangles
     unsigned int (*get_width)(Rectangle *self);
     unsigned int (*get_height)(Rectangle *self);
     unsigned int (*get_area)(Rectangle *self);
-    Rectangle *(*get_rectangle)(void);
+    Rectangle *(*get_rectangle)(int);
     void (*cleanup)(void);
     int (*compare_area)( const void *a, const void *b);
+    // flags for get_rectangle
+    int STANDARD;
+    int SINGLETON;
 };
 
-extern struct Rectangles Rectangles;
+extern struct s_rectangles Rectangles;

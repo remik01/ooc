@@ -14,8 +14,14 @@ int main(int argc, char const *argv[])
 
     for(int i = 0; i < 100; i++)
     {
-        myrec[i] = Rectangles.get_rectangle();
-
+        //the last 25 elements are the same,
+        // due to an optional singleton featureof the factory
+        myrec[i] = Rectangles.get_rectangle(i < 75 ?
+                                            Rectangles.STANDARD :
+                                            Rectangles.SINGLETON);
+        // as the objects are pointers,
+        // when a singleton will be changed,
+        //then all other will also be changed
         Rectangles.set_width(myrec[i], (31 * i) % 69)
         ->set_height(myrec[i], (51 * i) % 155 );
     }
