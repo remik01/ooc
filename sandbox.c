@@ -11,6 +11,7 @@
 int main(int argc, char const *argv[])
 {
     Rectangle *myrec[100];
+    int UID;
 
     for(int i = 0; i < 100; i++)
     {
@@ -28,6 +29,7 @@ int main(int argc, char const *argv[])
         if(i == 75)
         {
             myrec[i]->immute(myrec[i]);
+            UID = myrec[i]->get_uid(myrec[i]);
         }
     }
 
@@ -65,8 +67,19 @@ int main(int argc, char const *argv[])
     {
         printf("%d x %d = %d (%d)\n", Rectangles.get_width(sorted_rec[i]),
                Rectangles.get_height(sorted_rec[i]),
-               Rectangles.get_area(sorted_rec[i]), sorted_rec[i]->is_immutable);
+               Rectangles.get_area(sorted_rec[i]), Rectangles.get_uid(sorted_rec[i]));
     }
+
+    Rectangle *singleton = Rectangles.uid_lookup(UID);
+    if(singleton != NULL)
+    {
+        printf("the singleton is: %d x %d = %d (%d)\n",
+               Rectangles.get_width(singleton),
+               Rectangles.get_height(singleton),
+               Rectangles.get_area(singleton),
+               Rectangles.get_uid(singleton));
+    }
+
 
     Rectangles.cleanup();
 

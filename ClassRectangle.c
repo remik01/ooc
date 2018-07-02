@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <time.h>
 #include "ClassRectangle.h"
 
 // flags for get_rectangle
@@ -31,7 +32,6 @@ Rectangle *immute( Rectangle *self)
     return self;
 }
 
-
 unsigned int get_width( Rectangle *self)
 {
     return self->width;
@@ -47,6 +47,10 @@ unsigned int get_area( Rectangle *self)
     return self->width * self->height;
 }
 
+unsigned int get_uid( Rectangle *self)
+{
+    return self->UID;
+}
 
 // linked list to keep created rectangles
 // due to later free allocated memory
@@ -79,6 +83,11 @@ void cleanup(void)
 // a kind of design pattern "factory"
 Rectangle *get_rectangle(int flag)
 {
+    if (head == NULL)
+    {
+        srand(time(NULL));
+    }
+
     Rectangle *myrec;
     if (head == NULL || (flag & _SINGLETON) != _SINGLETON)
     {
@@ -94,6 +103,8 @@ Rectangle *get_rectangle(int flag)
         myrec->get_width = get_width;
         myrec->get_height = get_height;
         myrec->get_area = get_area;
+        myrec->get_uid = get_uid;
+        myrec->UID = rand();
 
         node *new_node = (node *)malloc(sizeof(node));
         if(new_node == NULL)
@@ -125,8 +136,25 @@ int compare_area( const void *a, const void *b)
     else return 1;
 }
 
+// the declaration has to be here
+// then Rectangles depends on uid_lookup, and uid_lookup depends on Rectangles
+Rectangle *uid_lookup(int UID);
+
 // this simulates static issues of a class
 struct s_rectangles Rectangles = {0, 0, set_width, set_height,
-           immute, get_width, get_height, get_area, get_rectangle,
-           cleanup, compare_area, _STANDARD, _SINGLETON
+           immute, get_width, get_height, get_area, get_uid, get_rectangle,
+           uid_lookup, cleanup, compare_area, _STANDARD, _SINGLETON
 };
+
+Rectangle *uid_lookup(int UID)
+{
+    node *cursor = head;
+    while(cursor != NULL)
+    {
+        if (Rectangles.get_uid(cursor->rec))
+        {
+            return cursor->rec;
+        };
+    }
+    return (Rectangle *) NULL;
+}
