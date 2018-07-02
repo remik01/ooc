@@ -62,6 +62,8 @@ struct node
     struct node *next;
 };
 
+// the variable is not visible outside of the file
+// so it is a kind of private static
 node *head = NULL;
 
 void cleanup(void)
