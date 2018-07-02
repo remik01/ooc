@@ -7,7 +7,7 @@ struct s_rectangle
     int width;
     int height;
     bool is_immutable;
-    int UID;
+    int UID; // a unique ID of a object
     Rectangle *(*set_width)(Rectangle *self, int width);
     Rectangle *(*set_height)(Rectangle *self, int height);
     Rectangle *(*immute)(Rectangle *self);
