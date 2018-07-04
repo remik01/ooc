@@ -3,47 +3,69 @@
 #include <string.h>
 #include <pthread.h>
 
+#include "AbstractClassShape.h"
+#include "ClassTriangle.h"
+#include "ClassEllipse.h"
 #include "ClassRectangle.h"
 
-void merge_sorted(Rectangle *myrec[], Rectangle *sorted_rec[]);
+void merge_sorted(Shape *my_shape[], Shape *sorted_shape[]);
 
-void *partial_qsort(void *myrec);
+void *partial_qsort(void *my_shape);
 
 int main(int argc, char const *argv[])
 {
-    Rectangle *myrec[1000];
+    Shape *my_shape[1000];
     int UID;
 
     for(int i = 0; i < 1000; i++)
     {
-        //the last 25 elements are the same,
-        // due to an optional singleton featureof the factory
-        myrec[i] = Rectangles.get_rectangle(
-                       (i < 975 ? Rectangles.STANDARD : Rectangles.SINGLETON)
-                   );
+        if(i < 300)
+        {
+            // Triangles
+            my_shape[i] = (Shape *) Triangles.get_triangle(Triangles.STANDARD);
+        }
+        else if(i < 600)
+        {
+            // Triangles
+            my_shape[i] = (Shape *) Ellipses.get_ellipse(Ellipses.STANDARD);
+        }
+        else
+        {
+            // Rectangles
+            //the last 25 elements are the same,
+            // due to an optional singleton featureof the factory
+            my_shape[i] = (Shape *) Rectangles.get_rectangle(
+                              (i < 975 ? Rectangles.STANDARD : Rectangles.SINGLETON)
+                          );
+        }
+
+
         // as the objects are pointers,
         // when a singleton will be changed,
         // then all other will also be changed
         // except we make them immutable
-        Rectangles.set_width(myrec[i], (31 * i) % 69)
-        ->set_height(myrec[i], (51 * i) % 155 );
+        Shapes.set_width(my_shape[i], (31 * i) % 69)
+        ->set_height(my_shape[i], (51 * i) % 155 );
         if(i == 975)
         {
-            myrec[i]->immute(myrec[i]);
-            UID = myrec[i]->get_uid(myrec[i]);
+            my_shape[i]->immute(my_shape[i]);
+            UID = my_shape[i]->get_uid(my_shape[i]);
         }
+
+
+
     }
 
     pthread_t thread_lh;
     pthread_t thread_rh;
 
-    if(pthread_create(&thread_lh, NULL, partial_qsort, myrec))
+    if(pthread_create(&thread_lh, NULL, partial_qsort, my_shape))
     {
         fprintf(stderr, "Error creating thread lh\n");
         return 1;
     }
 
-    if(pthread_create(&thread_rh, NULL, partial_qsort, myrec + 500))
+    if(pthread_create(&thread_rh, NULL, partial_qsort, my_shape + 500))
     {
         fprintf(stderr, "Error creating thread rh\n");
         return 1;
@@ -61,18 +83,18 @@ int main(int argc, char const *argv[])
         return 2;
     }
 
-    // qsort( myrec, 500, sizeof(Rectangle *), Rectangles.compare_area );
-    // qsort( myrec + 500, 500, sizeof(Rectangle *), Rectangles.compare_area );
+    // qsort( my_shape, 500, sizeof(Rectangle *), Rectangles.compare_area );
+    // qsort( my_shape + 500, 500, sizeof(Rectangle *), Rectangles.compare_area );
 
-    Rectangle *sorted_rec[1000];
+    Shape *sorted_shape[1000];
 
-    merge_sorted(myrec, sorted_rec);
+    merge_sorted(my_shape, sorted_shape);
 
     for(int i = 0; i < 1000; i++)
     {
-        printf("%d x %d = %d (%d)\n", Rectangles.get_width(sorted_rec[i]),
-               Rectangles.get_height(sorted_rec[i]),
-               Rectangles.get_area(sorted_rec[i]), Rectangles.get_uid(sorted_rec[i]));
+        printf("%d x %d = %d (%d)\n", sorted_shape[i]->get_width(sorted_shape[i]),
+               sorted_shape[i]->get_height(sorted_shape[i]),
+               sorted_shape[i]->get_area(sorted_shape[i]), sorted_shape[i]->get_uid(sorted_shape[i]));
     }
 
     Rectangle *singleton = Rectangles.uid_lookup(UID);
@@ -87,41 +109,43 @@ int main(int argc, char const *argv[])
 
 
     Rectangles.cleanup();
+    Triangles.cleanup();
+    Ellipses.cleanup();
 
     return 0;
 }
 
-void merge_sorted(Rectangle *myrec[], Rectangle *sorted_rec[])
+void merge_sorted(Shape *my_shape[], Shape *sorted_shape[])
 {
-    Rectangle **rec_lh, **rec_rh, **rec_lh_end, **rec_rh_end, **sorted_rec_walk;
+    Shape **rec_lh, **rec_rh, **rec_lh_end, **rec_rh_end, **sorted_shape_walk;
 
-    rec_lh = myrec;
-    rec_lh_end = myrec + 499;
-    rec_rh = myrec + 500;
-    rec_rh_end = myrec + 999;
-    sorted_rec_walk = sorted_rec;
+    rec_lh = my_shape;
+    rec_lh_end = my_shape + 499;
+    rec_rh = my_shape + 500;
+    rec_rh_end = my_shape + 999;
+    sorted_shape_walk = sorted_shape;
 
     while(rec_lh <= rec_lh_end && rec_rh <= rec_rh_end)
     {
-        *sorted_rec_walk++ = Rectangles.get_area(*rec_lh) < Rectangles.get_area(*rec_rh) ?
-                             *rec_lh++ : *rec_rh++;
+        *sorted_shape_walk++ = (*rec_lh)->get_area(*rec_lh) < (*rec_rh)->get_area(*rec_rh) ?
+                               *rec_lh++ : *rec_rh++;
     }
 
     while(rec_lh <= rec_lh_end)
     {
-        *sorted_rec_walk++ = *rec_lh++;
+        *sorted_shape_walk++ = *rec_lh++;
     }
 
     while(rec_rh <= rec_rh_end)
     {
-        *sorted_rec_walk++ = *rec_rh++;
+        *sorted_shape_walk++ = *rec_rh++;
     }
 
     return;
 }
 
-void *partial_qsort(void *myrec)
+void *partial_qsort(void *my_shape)
 {
-    qsort( myrec, 500, sizeof(Rectangle *), Rectangles.compare_area );
+    qsort( my_shape, 500, sizeof(Shape *), Shapes.compare_area );
     return NULL;
 }

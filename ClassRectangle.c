@@ -8,7 +8,7 @@
 #define _STANDARD  0 // in code: Rectangles.STANDARD
 #define _SINGLETON 1 // in code: Rectangles.SINGLETON
 
-Rectangle *set_width( Rectangle *self, int width)
+static Rectangle *set_width( Rectangle *self, int width)
 {
     if(!self->is_immutable)
     {
@@ -17,7 +17,7 @@ Rectangle *set_width( Rectangle *self, int width)
     return self;
 }
 
-Rectangle *set_height( Rectangle *self, int height)
+static Rectangle *set_height( Rectangle *self, int height)
 {
     if(!self->is_immutable)
     {
@@ -26,28 +26,28 @@ Rectangle *set_height( Rectangle *self, int height)
     return self;
 }
 
-Rectangle *immute( Rectangle *self)
+static Rectangle *immute( Rectangle *self)
 {
     self->is_immutable = true;
     return self;
 }
 
-unsigned int get_width( Rectangle *self)
+static unsigned int get_width( Rectangle *self)
 {
     return self->width;
 }
 
-unsigned int get_height( Rectangle *self)
+static unsigned int get_height( Rectangle *self)
 {
     return self->height;
 }
 
-unsigned int get_area( Rectangle *self)
+static unsigned int get_area( Rectangle *self)
 {
     return self->width * self->height;
 }
 
-unsigned int get_uid( Rectangle *self)
+static unsigned int get_uid( Rectangle *self)
 {
     return self->UID;
 }
@@ -64,9 +64,9 @@ struct node
 
 // the variable is not visible outside of the file
 // so it is a kind of private static
-node *head = NULL;
+static node *head = NULL;
 
-void cleanup(void)
+static void cleanup(void)
 {
     node *cursor = head;
     while(cursor != NULL)
@@ -83,7 +83,7 @@ void cleanup(void)
 
 
 // a kind of design pattern "factory"
-Rectangle *get_rectangle(int flag)
+static Rectangle *get_rectangle(int flag)
 {
     if (head == NULL)
     {
@@ -128,7 +128,7 @@ Rectangle *get_rectangle(int flag)
 }
 
 // for sorting purposes
-int compare_area( const void *a, const void *b)
+static int compare_area( const void *a, const void *b)
 {
     Rectangle *rec_a =  *((Rectangle **) a);
     Rectangle *rec_b =  *((Rectangle **) b);
@@ -140,7 +140,7 @@ int compare_area( const void *a, const void *b)
 
 // the declaration has to be here
 // then Rectangles depends on uid_lookup, and uid_lookup depends on Rectangles
-Rectangle *uid_lookup(int UID);
+static Rectangle *uid_lookup(int UID);
 
 // this simulates static issues of a class
 struct s_rectangles Rectangles = {0, 0, set_width, set_height,
@@ -148,7 +148,7 @@ struct s_rectangles Rectangles = {0, 0, set_width, set_height,
            uid_lookup, cleanup, compare_area, _STANDARD, _SINGLETON
 };
 
-Rectangle *uid_lookup(int UID)
+static Rectangle *uid_lookup(int UID)
 {
     node *cursor = head;
     while(cursor != NULL)
