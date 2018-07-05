@@ -71,11 +71,11 @@ static void cleanup(void)
     node *cursor = head;
     while(cursor != NULL)
     {
-        node *tmp = cursor;
+        node *tmp = cursor->next;
         free(cursor->rec);
         cursor->rec = NULL;
         free(cursor);
-        cursor = tmp->next;
+        cursor = tmp;
     }
     head = NULL;
 }
@@ -93,7 +93,7 @@ static Triangle *get_triangle(int flag)
     Triangle *myrec;
     if (head == NULL || (flag & _SINGLETON) != _SINGLETON)
     {
-        myrec = (Triangle *)malloc(sizeof(Triangle));
+        myrec = (Triangle *)calloc(1,sizeof(Triangle));
         if(myrec == NULL)
         {
             printf("Error creating a new Triangle.\n");
@@ -108,7 +108,7 @@ static Triangle *get_triangle(int flag)
         myrec->get_uid = get_uid;
         myrec->UID = rand();
 
-        node *new_node = (node *)malloc(sizeof(node));
+        node *new_node = (node *)calloc(1,sizeof(node));
         if(new_node == NULL)
         {
             printf("Error creating a new node.\n");

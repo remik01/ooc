@@ -71,11 +71,11 @@ static void cleanup(void)
     node *cursor = head;
     while(cursor != NULL)
     {
-        node *tmp = cursor;
+        node *tmp = cursor->next;
         free(cursor->rec);
         cursor->rec = NULL;
         free(cursor);
-        cursor = tmp->next;
+        cursor = tmp;
     }
     head = NULL;
 }
@@ -93,7 +93,7 @@ static Ellipse *get_ellipse(int flag)
     Ellipse *myrec;
     if (head == NULL || (flag & _SINGLETON) != _SINGLETON)
     {
-        myrec = (Ellipse *)malloc(sizeof(Ellipse));
+        myrec = (Ellipse *)calloc(1,sizeof(Ellipse));
         if(myrec == NULL)
         {
             printf("Error creating a new Ellipse.\n");
@@ -108,7 +108,7 @@ static Ellipse *get_ellipse(int flag)
         myrec->get_uid = get_uid;
         myrec->UID = rand();
 
-        node *new_node = (node *)malloc(sizeof(node));
+        node *new_node = (node *)calloc(1,sizeof(node));
         if(new_node == NULL)
         {
             printf("Error creating a new node.\n");

@@ -6,3 +6,6 @@ debug: sandbox.c AbstractClassShape.c ClassRectangle.c ClassTriangle.c ClassElli
 
 run:
 	./sandbox
+
+memcheck:
+	valgrind --leak-check=yes --track-origins=yes ./sandbox
