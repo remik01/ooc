@@ -26,7 +26,7 @@ int main(int argc, char const *argv[])
         }
         else if(i < 600)
         {
-            // Triangles
+            // Ellipses
             my_shape[i] = (Shape *) Ellipses.get_ellipse(Ellipses.STANDARD);
         }
         else
@@ -107,10 +107,11 @@ int main(int argc, char const *argv[])
                Rectangles.get_uid(singleton));
     }
 
-
-    Rectangles.cleanup();
-    Triangles.cleanup();
-    Ellipses.cleanup();
+    // the classes have destructors which work only in GCC
+    // in the case of another compiler, they have to be called explicitely:
+    // Rectangles.cleanup();
+    // Triangles.cleanup();
+    // Ellipses.cleanup();
 
     return 0;
 }

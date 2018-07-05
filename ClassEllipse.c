@@ -2,18 +2,18 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
-#include "ClassRectangle.h"
+#include "ClassEllipse.h"
 
-// flags for get_rectangle
-#define _STANDARD  0 // in code: Rectangles.STANDARD
-#define _SINGLETON 1 // in code: Rectangles.SINGLETON
+// flags for get_ellipse
+#define _STANDARD  0 // in code: Ellipses.STANDARD
+#define _SINGLETON 1 // in code: Ellipses.SINGLETON
 
 // IT WORKS ONLY IN GCC !
 // in other compilers it has to be called at the end of main():
-// Rectangles.cleanup();
+// Ellipses.cleanup();
 static void cleanup (void) __attribute__((destructor));
 
-static Rectangle *set_width( Rectangle *self, int width)
+static Ellipse *set_width( Ellipse *self, int width)
 {
     if(!self->is_immutable)
     {
@@ -22,7 +22,7 @@ static Rectangle *set_width( Rectangle *self, int width)
     return self;
 }
 
-static Rectangle *set_height( Rectangle *self, int height)
+static Ellipse *set_height( Ellipse *self, int height)
 {
     if(!self->is_immutable)
     {
@@ -31,39 +31,39 @@ static Rectangle *set_height( Rectangle *self, int height)
     return self;
 }
 
-static Rectangle *immute( Rectangle *self)
+static Ellipse *immute( Ellipse *self)
 {
     self->is_immutable = true;
     return self;
 }
 
-static unsigned int get_width( Rectangle *self)
+static unsigned int get_width( Ellipse *self)
 {
     return self->width;
 }
 
-static unsigned int get_height( Rectangle *self)
+static unsigned int get_height( Ellipse *self)
 {
     return self->height;
 }
 
-static unsigned int get_area( Rectangle *self)
+static unsigned int get_area( Ellipse *self)
 {
-    return self->width * self->height;
+    return self->width * self->height * 3.141 * 0.25;
 }
 
-static unsigned int get_uid( Rectangle *self)
+static unsigned int get_uid( Ellipse *self)
 {
     return self->UID;
 }
 
-// linked list to keep created rectangles
+// linked list to keep created ellipses
 // due to later free allocated memory
 typedef struct node node;
 
 struct node
 {
-    Rectangle *rec;
+    Ellipse *rec;
     struct node *next;
 };
 
@@ -88,20 +88,20 @@ static void cleanup(void)
 
 
 // a kind of design pattern "factory"
-static Rectangle *get_rectangle(int flag)
+static Ellipse *get_ellipse(int flag)
 {
     if (head == NULL)
     {
         srand(time(NULL));
     }
 
-    Rectangle *myrec;
+    Ellipse *myrec;
     if (head == NULL || (flag & _SINGLETON) != _SINGLETON)
     {
-        myrec = (Rectangle *)malloc(sizeof(Rectangle));
+        myrec = (Ellipse *)malloc(sizeof(Ellipse));
         if(myrec == NULL)
         {
-            printf("Error creating a new Rectangle.\n");
+            printf("Error creating a new Ellipse.\n");
             exit(0);
         }
         myrec->set_width = set_width;
@@ -135,8 +135,8 @@ static Rectangle *get_rectangle(int flag)
 // for sorting purposes
 static int compare_area( const void *a, const void *b)
 {
-    Rectangle *rec_a =  *((Rectangle **) a);
-    Rectangle *rec_b =  *((Rectangle **) b);
+    Ellipse *rec_a =  *((Ellipse **) a);
+    Ellipse *rec_b =  *((Ellipse **) b);
 
     if ( rec_a->get_area(rec_a) == rec_b->get_area(rec_b) ) return 0;
     else if ( rec_a->get_area(rec_a) < rec_b->get_area(rec_b) ) return -1;
@@ -144,24 +144,24 @@ static int compare_area( const void *a, const void *b)
 }
 
 // the declaration has to be here
-// then Rectangles depends on uid_lookup, and uid_lookup depends on Rectangles
-static Rectangle *uid_lookup(int UID);
+// then Ellipses depends on uid_lookup, and uid_lookup depends on Ellipses
+static Ellipse *uid_lookup(int UID);
 
 // this simulates static issues of a class
-struct s_rectangles Rectangles = {0, 0, set_width, set_height,
-           immute, get_width, get_height, get_area, get_uid, get_rectangle,
+struct s_ellipses Ellipses = {0, 0, set_width, set_height,
+           immute, get_width, get_height, get_area, get_uid, get_ellipse,
            uid_lookup, cleanup, compare_area, _STANDARD, _SINGLETON
 };
 
-static Rectangle *uid_lookup(int UID)
+static Ellipse *uid_lookup(int UID)
 {
     node *cursor = head;
     while(cursor != NULL)
     {
-        if (Rectangles.get_uid(cursor->rec))
+        if (Ellipses.get_uid(cursor->rec))
         {
             return cursor->rec;
         };
     }
-    return (Rectangle *) NULL;
+    return (Ellipse *) NULL;
 }

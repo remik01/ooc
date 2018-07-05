@@ -2,18 +2,18 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
-#include "ClassRectangle.h"
+#include "ClassTriangle.h"
 
-// flags for get_rectangle
-#define _STANDARD  0 // in code: Rectangles.STANDARD
-#define _SINGLETON 1 // in code: Rectangles.SINGLETON
+// flags for get_triangle
+#define _STANDARD  0 // in code: Triangles.STANDARD
+#define _SINGLETON 1 // in code: Triangles.SINGLETON
 
 // IT WORKS ONLY IN GCC !
 // in other compilers it has to be called at the end of main():
-// Rectangles.cleanup();
+// Triangles.cleanup();
 static void cleanup (void) __attribute__((destructor));
 
-static Rectangle *set_width( Rectangle *self, int width)
+static Triangle *set_width( Triangle *self, int width)
 {
     if(!self->is_immutable)
     {
@@ -22,7 +22,7 @@ static Rectangle *set_width( Rectangle *self, int width)
     return self;
 }
 
-static Rectangle *set_height( Rectangle *self, int height)
+static Triangle *set_height( Triangle *self, int height)
 {
     if(!self->is_immutable)
     {
@@ -31,39 +31,39 @@ static Rectangle *set_height( Rectangle *self, int height)
     return self;
 }
 
-static Rectangle *immute( Rectangle *self)
+static Triangle *immute( Triangle *self)
 {
     self->is_immutable = true;
     return self;
 }
 
-static unsigned int get_width( Rectangle *self)
+static unsigned int get_width( Triangle *self)
 {
     return self->width;
 }
 
-static unsigned int get_height( Rectangle *self)
+static unsigned int get_height( Triangle *self)
 {
     return self->height;
 }
 
-static unsigned int get_area( Rectangle *self)
+static unsigned int get_area( Triangle *self)
 {
-    return self->width * self->height;
+    return self->width * self->height * 0.5;
 }
 
-static unsigned int get_uid( Rectangle *self)
+static unsigned int get_uid( Triangle *self)
 {
     return self->UID;
 }
 
-// linked list to keep created rectangles
+// linked list to keep created triangles
 // due to later free allocated memory
 typedef struct node node;
 
 struct node
 {
-    Rectangle *rec;
+    Triangle *rec;
     struct node *next;
 };
 
@@ -88,20 +88,20 @@ static void cleanup(void)
 
 
 // a kind of design pattern "factory"
-static Rectangle *get_rectangle(int flag)
+static Triangle *get_triangle(int flag)
 {
     if (head == NULL)
     {
         srand(time(NULL));
     }
 
-    Rectangle *myrec;
+    Triangle *myrec;
     if (head == NULL || (flag & _SINGLETON) != _SINGLETON)
     {
-        myrec = (Rectangle *)malloc(sizeof(Rectangle));
+        myrec = (Triangle *)malloc(sizeof(Triangle));
         if(myrec == NULL)
         {
-            printf("Error creating a new Rectangle.\n");
+            printf("Error creating a new Triangle.\n");
             exit(0);
         }
         myrec->set_width = set_width;
@@ -135,8 +135,8 @@ static Rectangle *get_rectangle(int flag)
 // for sorting purposes
 static int compare_area( const void *a, const void *b)
 {
-    Rectangle *rec_a =  *((Rectangle **) a);
-    Rectangle *rec_b =  *((Rectangle **) b);
+    Triangle *rec_a =  *((Triangle **) a);
+    Triangle *rec_b =  *((Triangle **) b);
 
     if ( rec_a->get_area(rec_a) == rec_b->get_area(rec_b) ) return 0;
     else if ( rec_a->get_area(rec_a) < rec_b->get_area(rec_b) ) return -1;
@@ -144,24 +144,24 @@ static int compare_area( const void *a, const void *b)
 }
 
 // the declaration has to be here
-// then Rectangles depends on uid_lookup, and uid_lookup depends on Rectangles
-static Rectangle *uid_lookup(int UID);
+// then Triangles depends on uid_lookup, and uid_lookup depends on Triangles
+static Triangle *uid_lookup(int UID);
 
 // this simulates static issues of a class
-struct s_rectangles Rectangles = {0, 0, set_width, set_height,
-           immute, get_width, get_height, get_area, get_uid, get_rectangle,
+struct s_triangles Triangles = {0, 0, set_width, set_height,
+           immute, get_width, get_height, get_area, get_uid, get_triangle,
            uid_lookup, cleanup, compare_area, _STANDARD, _SINGLETON
 };
 
-static Rectangle *uid_lookup(int UID)
+static Triangle *uid_lookup(int UID)
 {
     node *cursor = head;
     while(cursor != NULL)
     {
-        if (Rectangles.get_uid(cursor->rec))
+        if (Triangles.get_uid(cursor->rec))
         {
             return cursor->rec;
         };
     }
-    return (Rectangle *) NULL;
+    return (Triangle *) NULL;
 }
