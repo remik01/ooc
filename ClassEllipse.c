@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
+#include "AbstractClassShape.h"
 #include "ClassEllipse.h"
 
 // flags for get_ellipse
@@ -15,20 +16,14 @@ static void cleanup (void) __attribute__((destructor));
 
 static Ellipse *set_width( Ellipse *self, int width)
 {
-    if(!self->is_immutable)
-    {
-        self->width = width;
-    }
-    return self;
+    // inheritance through the call of the respective parent method
+    return (Ellipse *) Shapes.set_height((Shape *) self, width);
 }
 
 static Ellipse *set_height( Ellipse *self, int height)
 {
-    if(!self->is_immutable)
-    {
-        self->height = height;
-    }
-    return self;
+    // inheritance through the call of the respective parent method
+    return (Ellipse *) Shapes.set_height((Shape *) self, height);
 }
 
 static Ellipse *immute( Ellipse *self)

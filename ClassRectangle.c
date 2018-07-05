@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
+#include "AbstractClassShape.h"
 #include "ClassRectangle.h"
 
 // flags for get_rectangle
@@ -15,20 +16,14 @@ static void cleanup (void) __attribute__((destructor));
 
 static Rectangle *set_width( Rectangle *self, int width)
 {
-    if(!self->is_immutable)
-    {
-        self->width = width;
-    }
-    return self;
+    // inheritance through the call of the respective parent method
+    return (Rectangle *) Shapes.set_width((Shape *) self, width);
 }
 
 static Rectangle *set_height( Rectangle *self, int height)
 {
-    if(!self->is_immutable)
-    {
-        self->height = height;
-    }
-    return self;
+    // inheritance through the call of the respective parent method
+    return (Rectangle *) Shapes.set_height((Shape *) self, height);
 }
 
 static Rectangle *immute( Rectangle *self)

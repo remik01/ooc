@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
+#include "AbstractClassShape.h"
 #include "ClassTriangle.h"
 
 // flags for get_triangle
@@ -15,20 +16,14 @@ static void cleanup (void) __attribute__((destructor));
 
 static Triangle *set_width( Triangle *self, int width)
 {
-    if(!self->is_immutable)
-    {
-        self->width = width;
-    }
-    return self;
+    // inheritance through the call of the respective parent method
+    return (Triangle *) Shapes.set_height((Shape *) self, width);
 }
 
 static Triangle *set_height( Triangle *self, int height)
 {
-    if(!self->is_immutable)
-    {
-        self->height = height;
-    }
-    return self;
+    // inheritance through the call of the respective parent method
+    return (Triangle *) Shapes.set_height((Shape *) self, height);
 }
 
 static Triangle *immute( Triangle *self)
