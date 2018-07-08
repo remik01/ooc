@@ -30,8 +30,8 @@ ClassEllipse.o:  AbstractClassShape.h ClassEllipse.h
 sandbox.o:  AbstractClassShape.h ClassRectangle.h ClassTriangle.h ClassEllipse.h
 
 
-# all: sandbox.c AbstractClassShape.c ClassRectangle.c ClassTriangle.c ClassEllipse.c AbstractClassShape.h ClassRectangle.h ClassTriangle.h ClassEllipse.h
-# 	gcc -lpthread -fno-strict-aliasing -o sandbox sandbox.c AbstractClassShape.c ClassRectangle.c ClassTriangle.c ClassEllipse.c
+unittest: ClassRectangle.c ClassRectangle.h TestRectangle.c
+	gcc TestRectangle.c AbstractClassShape.c ClassRectangle.c -o TestRectangle -lcunit && ./TestRectangle
 
 debug : clean
 	gcc  -lpthread -fno-strict-aliasing -o sandbox  -Wall -Werror -pedantic-errors -ggdb sandbox.c AbstractClassShape.c ClassRectangle.c ClassTriangle.c ClassEllipse.c
