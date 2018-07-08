@@ -80,8 +80,6 @@ static void cleanup(void)
     head = NULL;
 }
 
-
-
 // a kind of design pattern "factory"
 static Triangle *get_triangle(int flag)
 {
