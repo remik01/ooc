@@ -9,3 +9,6 @@ run:
 
 memcheck:
 	valgrind --leak-check=yes --track-origins=yes ./sandbox
+
+commit:
+	git add -u && git commit && git push origin 
