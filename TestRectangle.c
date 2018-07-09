@@ -12,6 +12,7 @@
 
 
 static Rectangle *myrec = NULL;
+static int UID = 0;
 
 // The suite initialization function.
 int init_suite1(void)
@@ -23,6 +24,7 @@ int init_suite1(void)
     else
     {
         myrec->set_width(myrec, 123)->set_height(myrec, 456);
+        UID = myrec->get_uid(myrec);
         return 0;
     }
 }
@@ -32,7 +34,8 @@ int init_suite1(void)
 int clean_suite1(void)
 {
     Rectangles.cleanup();
-    if (NULL != myrec)
+    // after cleanup, our rectangle must NOT be found
+    if (NULL != Rectangles.uid_lookup(UID))
     {
         return -1;
     }
