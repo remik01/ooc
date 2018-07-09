@@ -90,23 +90,23 @@ static Ellipse *get_ellipse(int flag)
         srand(time(NULL));
     }
 
-    Ellipse *myrec;
+    Ellipse *myelli;
     if (head == NULL || (flag & _SINGLETON) != _SINGLETON)
     {
-        myrec = (Ellipse *)calloc(1,sizeof(Ellipse));
-        if(myrec == NULL)
+        myelli = (Ellipse *)calloc(1,sizeof(Ellipse));
+        if(myelli == NULL)
         {
             printf("Error creating a new Ellipse.\n");
             exit(0);
         }
-        myrec->set_width = set_width;
-        myrec->set_height = set_height;
-        myrec->immute = immute;
-        myrec->get_width = get_width;
-        myrec->get_height = get_height;
-        myrec->get_area = get_area;
-        myrec->get_uid = get_uid;
-        myrec->UID = rand();
+        myelli->set_width = set_width;
+        myelli->set_height = set_height;
+        myelli->immute = immute;
+        myelli->get_width = get_width;
+        myelli->get_height = get_height;
+        myelli->get_area = get_area;
+        myelli->get_uid = get_uid;
+        myelli->UID = rand();
 
         node *new_node = (node *)calloc(1,sizeof(node));
         if(new_node == NULL)
@@ -114,17 +114,17 @@ static Ellipse *get_ellipse(int flag)
             printf("Error creating a new node.\n");
             exit(0);
         }
-        new_node->rec = myrec;
+        new_node->rec = myelli;
         new_node->next = head;
         head = new_node;
     }
 
     if((flag & _SINGLETON) == _SINGLETON)
     {
-        myrec = head->rec;
+        myelli = head->rec;
     }
 
-    return myrec;
+    return myelli;
 }
 
 // for sorting purposes

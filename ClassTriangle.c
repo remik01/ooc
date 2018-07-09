@@ -88,23 +88,23 @@ static Triangle *get_triangle(int flag)
         srand(time(NULL));
     }
 
-    Triangle *myrec;
+    Triangle *mytria;
     if (head == NULL || (flag & _SINGLETON) != _SINGLETON)
     {
-        myrec = (Triangle *)calloc(1,sizeof(Triangle));
-        if(myrec == NULL)
+        mytria = (Triangle *)calloc(1,sizeof(Triangle));
+        if(mytria == NULL)
         {
             printf("Error creating a new Triangle.\n");
             exit(0);
         }
-        myrec->set_width = set_width;
-        myrec->set_height = set_height;
-        myrec->immute = immute;
-        myrec->get_width = get_width;
-        myrec->get_height = get_height;
-        myrec->get_area = get_area;
-        myrec->get_uid = get_uid;
-        myrec->UID = rand();
+        mytria->set_width = set_width;
+        mytria->set_height = set_height;
+        mytria->immute = immute;
+        mytria->get_width = get_width;
+        mytria->get_height = get_height;
+        mytria->get_area = get_area;
+        mytria->get_uid = get_uid;
+        mytria->UID = rand();
 
         node *new_node = (node *)calloc(1,sizeof(node));
         if(new_node == NULL)
@@ -112,17 +112,17 @@ static Triangle *get_triangle(int flag)
             printf("Error creating a new node.\n");
             exit(0);
         }
-        new_node->rec = myrec;
+        new_node->rec = mytria;
         new_node->next = head;
         head = new_node;
     }
 
     if((flag & _SINGLETON) == _SINGLETON)
     {
-        myrec = head->rec;
+        mytria = head->rec;
     }
 
-    return myrec;
+    return mytria;
 }
 
 // for sorting purposes
