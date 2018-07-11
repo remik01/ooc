@@ -14,6 +14,12 @@ void *partial_qsort(void *my_shape);
 
 int main(int argc, char const *argv[])
 {
+    // the classes have destructors which work only in GCC
+    // in the case of another compiler, they have to be set explicitely:
+    // atexit(Rectangles.cleanup);
+    // atexit(Triangles.cleanup);
+    // atexit(Ellipses.cleanup);
+
     Shape *my_shape[1000];
     int UID;
 
@@ -106,12 +112,6 @@ int main(int argc, char const *argv[])
                Rectangles.get_area(singleton),
                Rectangles.get_uid(singleton));
     }
-
-    // the classes have destructors which work only in GCC
-    // in the case of another compiler, they have to be called explicitely:
-    // Rectangles.cleanup();
-    // Triangles.cleanup();
-    // Ellipses.cleanup();
 
     return 0;
 }
