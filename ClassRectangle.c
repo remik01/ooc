@@ -81,7 +81,6 @@ static void cleanup(void)
 }
 
 
-
 // a kind of design pattern "factory"
 static Rectangle *get_rectangle(int flag)
 {

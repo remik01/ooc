@@ -20,6 +20,15 @@ int main(int argc, char const *argv[])
     // atexit(Triangles.cleanup);
     // atexit(Ellipses.cleanup);
 
+    extern const char _binary_random_data_dat_start;
+    extern const char _binary_random_data_dat_end;
+    extern const int _binary_random_data_dat_size;
+
+    printf("_binary_random_data_dat_size %d %c %c\n",
+        _binary_random_data_dat_size,
+        _binary_random_data_dat_end,
+        _binary_random_data_dat_start);
+
     Shape *my_shape[1000];
     int UID;
 
