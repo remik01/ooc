@@ -22,8 +22,10 @@ int main(int argc, char const *argv[])
 
     // access to an embedded data (in random_data.o)
     extern const unsigned char _binary_random_data_dat_start[];
-    extern const unsigned char _binary_random_data_dat_end[];
-    extern const int _binary_random_data_dat_size;
+
+    // a.t.m. unused:
+    // extern const unsigned char _binary_random_data_dat_end[];
+    // extern const int _binary_random_data_dat_size;
 
     Shape *my_shape[1000];
     int UID;

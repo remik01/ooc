@@ -38,8 +38,8 @@ random_data.o : random_data.dat
 unittest: ClassRectangle.c ClassRectangle.h TestRectangle.c
 	gcc TestRectangle.c AbstractClassShape.c ClassRectangle.c -o TestRectangle -lcunit && ./TestRectangle
 
-debug : clean
-	gcc  -lpthread -fno-strict-aliasing -o sandbox  -Wall -Werror -pedantic-errors -ggdb sandbox.c AbstractClassShape.c ClassRectangle.c ClassTriangle.c ClassEllipse.c
+debug : clean random_data.o
+	gcc  -lpthread -fno-strict-aliasing -o sandbox  -Wall -Werror -pedantic-errors -ggdb sandbox.c AbstractClassShape.c ClassRectangle.c ClassTriangle.c ClassEllipse.c random_data.o
 	echo Debug done
 
 run : $(LINK_TARGET)
