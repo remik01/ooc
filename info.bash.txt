@@ -12,3 +12,12 @@ ld -r -b binary cat.png -o cat.o
 MAKEFILE
 
 There is a built in make rule that says that linking xxxxx.o produces the executable xxxxx, in the absence of other information provided in the makefile for building xxxxx.
+
+
+
+
+-----------------
+
+fill a file with random data
+
+dd if=/dev/urandom count=2000 bs=1 >random_data
