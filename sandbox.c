@@ -17,11 +17,21 @@ int run(int argc, char const *argv[]);
 // modulino
 // can be loaded into e.g. test suite
 // without having a conflict about function "main"
+
+// in the cas of testing, the output will be catched
+// BTW freopen("...", "w+", stdout) WON'T work
+// as it would also consume messages from CUnit
+FILE *mystdout;
+
 #ifndef DONT_HAVE_MAIN
 
 int main(int argc, char const *argv[])
 {
-    return run(argc, argv);
+    // in a usual case, the output goes to stdout
+    mystdout = fopen("/dev/stdout", "a");
+    int ret = run(argc, argv);
+    fclose(mystdout);
+    return ret;
 }
 
 #endif
@@ -126,19 +136,19 @@ int run(int argc, char const *argv[])
 
     for(int i = 0; i < 1000; i++)
     {
-        printf("%d x %d = %d (%d)\n", sorted_shape[i]->get_width(sorted_shape[i]),
-               sorted_shape[i]->get_height(sorted_shape[i]),
-               sorted_shape[i]->get_area(sorted_shape[i]), sorted_shape[i]->get_uid(sorted_shape[i]));
+        fprintf(mystdout, "%d x %d = %d (%d)\n", sorted_shape[i]->get_width(sorted_shape[i]),
+                sorted_shape[i]->get_height(sorted_shape[i]),
+                sorted_shape[i]->get_area(sorted_shape[i]), sorted_shape[i]->get_uid(sorted_shape[i]));
     }
 
     Rectangle *singleton = Rectangles.uid_lookup(UID);
     if(singleton != NULL)
     {
-        printf("the singleton is: %d x %d = %d (%d)\n",
-               Rectangles.get_width(singleton),
-               Rectangles.get_height(singleton),
-               Rectangles.get_area(singleton),
-               Rectangles.get_uid(singleton));
+        fprintf(mystdout, "the singleton is: %d x %d = %d (%d)\n",
+                Rectangles.get_width(singleton),
+                Rectangles.get_height(singleton),
+                Rectangles.get_area(singleton),
+                Rectangles.get_uid(singleton));
     }
 
     return 0;
