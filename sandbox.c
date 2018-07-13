@@ -12,7 +12,22 @@ void merge_sorted(Shape *my_shape[], Shape *sorted_shape[]);
 
 void *partial_qsort(void *my_shape);
 
+int run(int argc, char const *argv[]);
+
+// modulino
+// can be loaded into e.g. test suite
+// without having a conflict about function "main"
+#ifndef DONT_HAVE_MAIN
+
 int main(int argc, char const *argv[])
+{
+    return run(argc, argv);
+}
+
+#endif
+
+
+int run(int argc, char const *argv[])
 {
     // the classes have destructors which work only in GCC
     // in the case of another compiler, they have to be set explicitely:

@@ -35,18 +35,22 @@ random_data.o : random_data.dat
 	nm random_data.o 
 	echo Embed Binary done
 
-unittest: ClassRectangle.c ClassRectangle.h TestRectangle.c
+unittest_rectangle: ClassRectangle.c ClassRectangle.h TestRectangle.c
 	gcc TestRectangle.c AbstractClassShape.c ClassRectangle.c -o TestRectangle -lcunit && ./TestRectangle
 
+unittest_sandbox: sandbox.c TestSandbox.c AbstractClassShape.c ClassRectangle.c ClassTriangle.c ClassEllipse.c random_data.o TestSandbox.c
+	gcc -lcunit -lpthread AbstractClassShape.c ClassRectangle.c ClassTriangle.c ClassEllipse.c random_data.o TestSandbox.c -o TestSandbox  && ./TestSandbox
+
 debug : clean random_data.o
-	gcc  -lpthread -fno-strict-aliasing -o sandbox  -Wall -Werror -pedantic-errors -ggdb sandbox.c AbstractClassShape.c ClassRectangle.c ClassTriangle.c ClassEllipse.c random_data.o
+	gcc  -lpthread -fno-strict-aliasing -o $(LINK_TARGET)  -Wall -Werror -pedantic-errors -ggdb sandbox.c AbstractClassShape.c ClassRectangle.c ClassTriangle.c ClassEllipse.c random_data.o
+	gdb $(LINK_TARGET)
 	echo Debug done
 
 run : $(LINK_TARGET)
 	./$(LINK_TARGET)
 
-memcheck :
-	valgrind --leak-check=yes --track-origins=yes ./sandbox
+memcheck : $(LINK_TARGET)
+	valgrind --leak-check=yes --track-origins=yes ./$(LINK_TARGET)
 
 commit :
 	git add -u && git commit && git push origin
