@@ -62,9 +62,10 @@ int init_suite1(void)
 int clean_suite1(void)
 {
     free(buffer);
-    buffer = 0;
+    buffer = NULL;
 
     fclose(mystdout);
+    mystdout = NULL;
 
     if (NULL != NULL)
     {

@@ -31,6 +31,7 @@ int main(int argc, char const *argv[])
     mystdout = fopen("/dev/stdout", "a");
     int ret = run(argc, argv);
     fclose(mystdout);
+    mystdout = NULL;
     return ret;
 }
 
