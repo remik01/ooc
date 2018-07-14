@@ -9,7 +9,11 @@ ClassEllipse.o \
 random_data.o \
 sandbox.o
 
-REBUILDABLES = $(OBJS) $(LINK_TARGET)
+TESTS = \
+TestRectangle \
+TestSandbox \
+
+REBUILDABLES = $(OBJS) $(LINK_TARGET) $(TESTS)
 
 all : $(LINK_TARGET)
 	echo All done
