@@ -1,4 +1,4 @@
-// untit test for the main file "sandbox"
+// untit test for the main file "sort_shapes"
 
 
 #include <stdio.h>
@@ -10,7 +10,7 @@
 // load the file as modulino
 // with disabled "main" function
 #define DONT_HAVE_MAIN
-#include "sandbox.c"
+#include "sort_shapes.c"
 
 char *buffer = 0;
 long length;
