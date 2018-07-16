@@ -29,7 +29,11 @@ int main(int argc, char const *argv[])
 {
     // in a usual case, the output goes to stdout
     mystdout = fopen("/dev/stdout", "a");
-    int ret = run(argc, argv);
+    int ret;
+    for (int i = 0; i < 100; i++)
+    {
+        ret = run(argc, argv);
+    }
     fclose(mystdout);
     mystdout = NULL;
     return ret;

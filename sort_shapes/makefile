@@ -50,6 +50,12 @@ debug : clean random_data.o
 	gdb $(LINK_TARGET)
 	echo Debug done
 
+profile : clean random_data.o
+	gcc  -lpthread -Wall -pg -no-pie sort_shapes.c AbstractClassShape.c ClassRectangle.c ClassTriangle.c ClassEllipse.c random_data.o -o $(LINK_TARGET)
+	./$(LINK_TARGET)
+	gprof -b $(LINK_TARGET)
+	echo Profiling done
+
 run : $(LINK_TARGET)
 	./$(LINK_TARGET)
 
