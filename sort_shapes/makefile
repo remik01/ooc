@@ -63,7 +63,7 @@ memcheck : $(LINK_TARGET)
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(LINK_TARGET)
 
 commit :
-	git add -u && git commit && git push origin
+	git add -u && git commit && git pull --rebase && git push origin
 
 clean :
 	rm -f $(REBUILDABLES)
