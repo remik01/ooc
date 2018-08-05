@@ -5,6 +5,7 @@ const unsigned int DISPLAY_SIZE = 20;
 
 char display[20];
 long long buffer = 0;
+char operator = '=';
 
 void show_display(void);
 void clear_display(void);
@@ -56,7 +57,7 @@ void show_display(void)
     {
         printf("%c", display[i]);
     }
-
+    printf("(%c)", operator);
 };
 
 void clear_display(void)
@@ -69,6 +70,19 @@ void clear_display(void)
 
 void handle(char c)
 {
+
+    switch (c)
+    {
+    case '+':
+        c = operator;
+        operator = '+';
+        break;
+    case '=':
+        c = operator;
+        operator = '=';
+        break;
+    }
+
     switch (c)
     {
     case '0':
@@ -81,7 +95,6 @@ void handle(char c)
     case '7':
     case '8':
     case '9':
-
         for(int i = 0; i < DISPLAY_SIZE - 1; i++)
         {
             display[i] = display[i + 1];
@@ -90,22 +103,16 @@ void handle(char c)
         show_display();
 
         break;
-
     case '+':
-
         buffer += display_to_number();
         clear_display();
-
         break;
     case '=':
-
         buffer_to_display();
-
         break;
     default:
         show_display();
         break;
-
     }
 };
 
