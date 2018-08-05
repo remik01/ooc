@@ -1,11 +1,12 @@
 TODO
 
-- sort with threads
-
-- a "general" (common/shared) instance to simulate the static data, to be different from other objects
--- it shoud be used as a pointer
--- it can be convieniently used in loops etc.
 
 
+- load dinamically a library
 
+- use inline functions
 
+/* Prototype.  */
+inline void foo (const char) __attribute__((always_inline));
+
+https://gcc.gnu.org/onlinedocs/gcc/Inline.html

@@ -156,7 +156,7 @@ int run(int argc, char const *argv[])
                 Rectangles.get_uid(singleton));
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 void merge_sorted(Shape *my_shape[], Shape *sorted_shape[])
