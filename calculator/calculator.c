@@ -5,7 +5,7 @@ const unsigned int DISPLAY_SIZE = 20;
 
 char display[20];
 long long buffer = 0;
-char operator = '=';
+char operator = 'x';
 
 void show_display(void);
 void clear_display(void);
@@ -77,9 +77,21 @@ void handle(char c)
         c = operator;
         operator = '+';
         break;
+    case '-':
+        c = operator;
+        operator = '-';
+        break;
+    case '*':
+        c = operator;
+        operator = '*';
+        break;
+    case '/':
+        c = operator;
+        operator = '/';
+        break;
     case '=':
         c = operator;
-        operator = '=';
+        operator = 'x';
         break;
     }
 
@@ -103,12 +115,37 @@ void handle(char c)
         show_display();
 
         break;
+    case 'x':
+        buffer = display_to_number();
+        clear_display();
+        break;
     case '+':
         buffer += display_to_number();
+        buffer_to_display();
         clear_display();
+        break;
+    case '-':
+        buffer -= display_to_number();
+        buffer_to_display();
+        clear_display();
+        break;
+    case '*':
+        buffer *= display_to_number();
+        buffer_to_display();
+        clear_display();
+        break;
+    case '/':
+        if(display_to_number() != 0)
+        {
+            buffer /= display_to_number();
+            buffer_to_display();
+            clear_display();
+        }
         break;
     case '=':
         buffer_to_display();
+        buffer = 0;
+        clear_display();
         break;
     default:
         show_display();
