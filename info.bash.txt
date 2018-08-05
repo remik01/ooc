@@ -21,3 +21,16 @@ There is a built in make rule that says that linking xxxxx.o produces the execut
 fill a file with random data
 
 dd if=/dev/urandom count=2000 bs=1 >random_data
+
+
+----------------
+
+
+no buffering, so a program does not wait for an enter to consume an input
+
+stty raw
+
+
+
+
+
