@@ -74,6 +74,9 @@ void show_display(void)
         lcd.print(display[i]);
     }
     // printf("(%c)", oper);
+    lcd.setCursor(0, 1);
+    lcd.print(oper);
+
 };
 
 void clear_display(void)
